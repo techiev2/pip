@@ -29,3 +29,15 @@ def test_install_package_that_emits_unicode():
     result = run_pip('install', to_install, expect_error=True, expect_temp=True, quiet=True)
     assert 'FakeError: this package designed to fail on install' in result.stdout
     assert 'UnicodeDecodeError' not in result.stdout
+
+def test_install_package_with_utf8_setup():
+    """Install a package with a setup.py that declares a utf-8 encoding."""
+    reset_env()
+    to_install = os.path.abspath(os.path.join(here, 'packages', 'SetupPyUTF8'))
+    run_pip('install', to_install, expect_error=False, quiet=True)
+
+def test_install_package_with_latin1_setup():
+    """Install a package with a setup.py that declares a latin-1 encoding."""
+    reset_env()
+    to_install = os.path.abspath(os.path.join(here, 'packages', 'SetupPyLatin1'))
+    run_pip('install', to_install, expect_error=False, quiet=False)
